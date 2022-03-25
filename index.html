@@ -1,0 +1,121 @@
+<html>
+    <head>
+        <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+        <script src="https://unpkg.com/aframe-environment-component/dist/aframe-environment-component.min.js"></script>
+        <script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>  
+ 
+        <!-- <script src="aframe-extras.min.js"></script> -->
+        <!-- <script src="aframe-physics-system.min.js"></script> -->
+
+        <title>জাতীয় স্মৃতিসৌধ</title>
+        <meta name="description" content="জাতীয় স্মৃতিসৌধ থেকে ঘুরে আসুন ঘরে বসেই!!">
+        <script>
+            function tn_pl(){
+                setInterval(()=>{
+                    document.getElementById("player").volume = 0.5;
+                    document.getElementById("player").play();
+                },5000)
+            }
+        </script>
+    </head>
+    <body onload="tn_pl()" style="user-select: none; -webkit-app-region:drag;">
+
+        <a-scene loading-screen="dotsColor: red; backgroundColor: green" physics="debug: false" vr-mode-ui="enabled:true">
+            <!-- <div id="preloader"></div> -->
+            <!-- assets -->
+            <a-assets>
+                <img id="concrete_texture" src="textures/concrete_texture.jpg">
+                <img id="white_marbel" src="textures/white_marbel_tiles.jpg">
+                <img id="sky_texture" src="textures/clear_sky.jpeg">
+                <img id="grass_texture" src="textures/grass(1).jpg">
+                <img id="brick" src="textures/brick_texture.jpg">
+                <a-asset-item id="sritisoudho" src="models/smritisoudho37.glb"></a-asset-item>
+                <a-asset-item id="mesh" src="models/mesh4.glb"></a-asset-item>
+                <a-asset-item id="trees" src="models/trees2a.glb"></a-asset-item>
+                <a-asset-item id="treesTri" src="models/trees3a.glb"></a-asset-item>
+            </a-assets>
+
+            <a-entity environment="preset: forest;fog:0.4;dressing:none;ground:flat;shadow:true;lighting:none" scale="3 1 3"></a-entity>
+
+            <a-entity id="smritisoudho" rotation="0 135 0" position="8 2 -70" gltf-model="#sritisoudho" scale="0.5 0.5 0.5">
+            </a-entity>
+            <a-entity id="tree1" rotation="0 90 0" position="8 2 -161" gltf-model="#trees" scale="0.5 0.5 0.5">
+            </a-entity>
+            <a-entity id="tree2" rotation="" position="102.33216 1.99912 -70" gltf-model="models/trees2a.glb" scale="0.5 0.5 0.5">
+            </a-entity>
+            <a-entity id="tree3" rotation="" position="-100 2 -70" gltf-model="models/trees2a.glb" scale="0.5 0.5 0.5">
+            </a-entity>
+            <a-entity id="tree4" rotation="0 90 0" position="8 2 10" gltf-model="models/trees2a.glb" scale="0.5 0.5 0.5">
+            </a-entity>
+            <a-entity id="treetri1" rotation="0 -43 0" position="-18.78055 2.44921 -70.20314" gltf-model="models/trees3a.glb" scale="0.5 0.5 0.5">
+            </a-entity>
+            <a-entity id="treetri2" rotation="0 138 0" position="30.35861 2.30709 -72.54539" gltf-model="models/trees3a.glb" scale="0.5 0.5 0.5">
+            </a-entity>
+            <a-entity mesh="" id="mesh" rotation="0 135 0" position="-4.00287 2.2 -105.73278" gltf-model="models/mesh4.glb" scale="0.5 0.5 0.5">
+            </a-entity>
+
+
+            <a-entity id="cameraRig" position="0 0 -25" >
+                <a-entity id="head" position="0 1.6 0" camera="userHeight:1.6" look-controls="pointerLockEnabled:true">
+                    <a-entity position="0.1 -0.1 0"
+                        touch-listener
+                        teleport-controls=
+                            "cameraRig: #cameraRig;
+                            teleportOrigin: #head;
+                            startEvents:starttouch;
+                            endEvents:endtouch;
+                            curveShootingSpeed:7;
+                            hitCylinderRadius:0.1;
+                            collisionEntities: [mesh]"
+                    >
+                    </a-entity>
+                    <a-cursor></a-cursor>
+                </a-entity>
+            </a-entity>    
+            <a-entity light="type: ambient; color: #CCC"></a-entity>
+        </a-scene>
+ 
+        <script>
+            AFRAME.registerComponent('touch-listener', {
+                init: function () {
+                    var targetEl = this.el;
+
+                    //Create the touchstart event
+                    document.querySelector('a-scene').addEventListener('touchstart', function () {
+                    targetEl.emit('starttouch')
+                    })
+
+                    document.querySelector('a-scene').addEventListener('mousedown', function () {
+                    targetEl.emit('starttouch')
+                    })
+
+                    document.body.addEventListener('keydown', function (e) {
+                    if (e.keyCode == 32) {
+                        console.log('space key pressed!');
+                        targetEl.emit('starttouch');      
+                    }  
+                    })
+                    
+                    //Create the touchend event
+                    document.querySelector('a-scene').addEventListener('touchend', function () {
+                    targetEl.emit('endtouch')
+                    })
+                    
+                    document.querySelector('a-scene').addEventListener('mouseup', function () {
+                    targetEl.emit('endtouch')
+                    })
+                    
+                    document.body.addEventListener('keyup', function (e) {
+                    if (e.keyCode == 32) {
+                        console.log('space key released!');
+                        targetEl.emit('endtouch');      
+                    }  
+                    })
+
+                    
+                }
+                });
+
+        </script>
+    </body>
+</html>
