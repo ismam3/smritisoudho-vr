@@ -4,7 +4,7 @@ import {GLTFLoader} from "./three/examples/jsm/loaders/GLTFLoader.js";
 var scene = document.querySelector('a-scene').object3D;
 let loader = new GLTFLoader()
 loader.load(
-    "./model/model.glb",
+    "/model/model.glb",
     (gltf)=>{
         var model = gltf.scene;
         model.position.set(0, 0, -80);
@@ -27,7 +27,7 @@ loader.load(
 let treeLoader = new GLTFLoader()
 var tree_array = []
 treeLoader.load(
-    "./model/tree2.glb",
+    "/model/tree2.glb",
     (gltf)=>{
         var model = gltf.scene;
         // model.rotation.set(0,-2.35619,0);
