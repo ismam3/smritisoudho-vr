@@ -1,0 +1,227 @@
+<html>
+    <head>
+        <script src="./scripts/js/a-frame/1-1-0.min.js"></script>
+        <script src="./scripts/js/a-frame/environment.min.js"></script>
+        <script src="./scripts/js/a-frame/teleport.min.js"></script>
+        <script src="./scripts/js/a-frame/extras.min.js"></script>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="theme-color" content="#87CEEB">
+
+        
+        <meta name="description" content="National Monument of Bangladesh in VR. Smritisoudho in virtual reality. Enjoy! the tour to Smritisoudho through metaverse">
+        <meta name="keywords" content="Smritisoudho, VR, VR museum">
+
+        <title>Shaheed Minar in VR</title>
+        <script>
+            alert("Caution: The performance of this application may be varied due to internet speed and your device. Please keep your patience!")
+        </script>
+        <style>
+            #preloader{
+        z-index: 10;
+        background-image: url("bg1.png");
+        background-color: #cccccc; 
+        background-position: center;
+        background-repeat: no-repeat; 
+        background-size: cover;
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      #panel{
+        width: 300px;
+        height: 20px;
+        border: 1px dotted red;
+        position: absolute;
+        top: calc(50% + 30px);
+        left: calc(50% - 150px);
+        padding: 0;
+      }
+      #progress{
+        height: 100%;
+        width: 0%;
+        background: green;
+      }
+      #status{
+        text-align: center;
+      }
+      h1,h2,h3,h4{
+        text-align: center;
+      }
+      h1{
+        font: 900;
+      }
+      h4{
+        color: aliceblue;
+      }
+      .heading{
+        position: absolute;
+        display: inline;
+        top: 105px;
+        width: 100vw;
+      }
+      #logo{
+        position: absolute;
+        left: calc(50vw - 125px);
+        width: 250px;
+        height: 100px;
+        top: 25px;
+      }
+      #navAlert{
+        position: absolute;
+        top: 90vh;
+      }
+      #mobile-controller{
+          position: fixed;
+          height: 120px;
+          z-index: 10;
+          background: transparent;
+          color: black;
+          font-size: 35px;
+          font-weight: 900;
+          padding: 0;
+          width: 120px;
+          top: calc(100vh - 130px);
+        }
+      #w, #s{
+          display: inline-block;
+          height: 39px;
+          width: 120px;
+          text-align: center;
+        }
+      #a{
+          display: inline-block;
+          height: 39px;
+          width: 60px;
+          text-align: center;
+        }
+      #d{
+          display: inline-block;
+          height: 39px;
+          width: 60px;
+          text-align: center;
+      }
+      p{
+          margin: 0;
+          padding: 0;
+          display: inline;
+          text-align: center;
+      }
+      #status{
+        color: black;
+        font-weight: 900;
+      }
+      table tr td{
+          text-align: center;
+          font-size: 30px;
+          font-weight: 900;
+          padding: 0;
+      }
+      #w, #a, #s, #d{
+          border: 1px black inset;
+          border-radius: 50px;
+      }
+        </style>
+    </head>
+    <body style="user-select: none; -webkit-app-region:drag;">
+        <div id="preloader">
+            <div class="heading">
+              <h1>Smritisoudho in VR</h1>
+              <h3>Starting of a new era</h3>
+            </div>
+            <div id="panel">
+              <div id="progress"></div>
+              <p id="status">Additional packages and assets are fetching</p>
+            </div>
+            <h4 id="navAlert"></h4>
+          </div>
+        <a-scene fog="type: linear; color: #AAA" vr-mode-ui="enabled:true" physics="debug: false">
+            <!-- assets -->
+            <a-assets>
+              
+              <a-asset-item id="movement-mesh" src="./model/nav.glb"></a-asset-item>
+                
+            </a-assets>
+
+            <a-entity environment="preset: forest;fog:0.23;dressing:none;ground:flat;shadow:true;skyType:atmosphere" scale="1 1 1"></a-entity>
+
+            
+            <a-entity ground id="mesh" rotation="0 -135 0" position="0 -2 -80" gltf-model="#movement-mesh" visible="false">
+            </a-entity>
+
+            <a-entity id="controller">
+                <a-entity id="cameraRig" position="10 4.2 0" >
+                    <a-entity id="head" position="0 0 0" camera="userHeight:1.2" look-controls="pointerLockEnabled:true">
+                        <a-entity position="0.1 -0.1 0"
+                            touch-listener
+                            teleport-controls=
+                                "cameraRig: #cameraRig;
+                                teleportOrigin: #head;
+                                startEvents:starttouch;
+                                endEvents:endtouch;
+                                curveShootingSpeed:8;
+                                hitCylinderRadius:1;
+                                collisionEntities: [ground]"
+                        >
+                        </a-entity>
+                </a-entity>
+            </a-entity>
+            
+        </a-scene>
+        <script src="./scripts/js/loader.js" type="module"></script>
+        <script>
+            AFRAME.registerComponent('touch-listener', {
+                init: function () {
+                    var targetEl = this.el;
+
+                    //Create the touchstart event
+                    document.querySelector('a-scene').addEventListener('touchstart', function () {
+                    targetEl.emit('starttouch')
+                    })
+
+                    document.querySelector('a-scene').addEventListener('mousedown', function () {
+                    targetEl.emit('starttouch')
+                    })
+
+                    document.body.addEventListener('keydown', function (e) {
+                    if (e.keyCode == 32) {
+                        console.log('space key pressed!');
+                        targetEl.emit('starttouch');      
+                    }  
+                    })
+                    
+                    //Create the touchend event
+                    document.querySelector('a-scene').addEventListener('touchend', function () {
+                    targetEl.emit('endtouch')
+                    })
+                    
+                    document.querySelector('a-scene').addEventListener('mouseup', function () {
+                    targetEl.emit('endtouch')
+                    })
+                    
+                    document.body.addEventListener('keyup', function (e) {
+                    if (e.keyCode == 32) {
+                        console.log('space key released!');
+                        targetEl.emit('endtouch');      
+                    }  
+                    })
+
+                    
+                }
+                });
+
+
+                document.querySelector("a-scene").addEventListener("enter-vr",function (){
+                    document.querySelector("#controller").innerHTML = "<a-entity movement-controls='constrainToNavMesh:True'><a-entity position='0 1.6 0' camera look-controls></a-entity></a-entity>"
+                })
+
+                document.querySelector("a-scene").addEventListener("exit-vr",function (){
+                    document.querySelector("#controller").innerHTML = "<a-entity id='cameraRig' position='0 1.2 0'><a-entity id='head' position='0 0 0' camera='userHeight:1.2' look-controls='pointerLockEnabled:true'><a-entity position='0.1 -0.1 0' touch-listener teleport-controls='cameraRig: #cameraRig;teleportOrigin: #head;startEvents:starttouch;endEvents:endtouch;curveShootingSpeed:3;hitCylinderRadius:0.1;collisionEntities: [mesh]'></a-entity></a-entity></a-entity>"
+                })
+
+        </script>
+    </body>
+</html>
